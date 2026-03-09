@@ -1,0 +1,6 @@
+[Bb]in/
+[Obj]/
+node_modules/
+.vs/
+.vscode/
+*.user
