@@ -1,0 +1,51 @@
+<div class="page">
+  <div class="page-header">
+    <h1>Estudiantes</h1>
+    <button class="btn btn-primary" (click)="openCreate()">+ Nuevo Estudiante</button>
+  </div>
+ 
+  <div class="toolbar">
+    <input class="search-input" type="text" placeholder="Buscar por nombre, email o documento..."
+           [(ngModel)]="search" />
+    <span class="count">{{ filtered.length }} resultado(s)</span>
+  </div>
+ 
+  <div *ngIf="loading" class="state-msg">Cargando estudiantes...</div>
+  <div *ngIf="error"   class="error-msg">{{ error }}</div>
+ 
+  <table *ngIf="!loading && !error" class="data-table">
+    <thead><tr>
+      <th>Nombre</th><th>Documento</th><th>Email</th>
+      <th>Matriculas</th><th>Estado</th><th>Acciones</th>
+    </tr></thead>
+    <tbody>
+      <tr *ngFor="let s of filtered">
+        <td>{{ s.fullName }}</td>
+        <td>{{ s.documentNumber }}</td>
+        <td>{{ s.email }}</td>
+        <td class="center">{{ s.enrollmentCount }}</td>
+        <td>
+          <span [class]="s.isActive ? 'badge-active' : 'badge-inactive'">
+            {{ s.isActive ? "Activo" : "Inactivo" }}
+          </span>
+        </td>
+        <td class="actions">
+          <button class="btn btn-sm btn-info"      (click)="viewCourses(s.id)">Ver Cursos</button>
+          <button class="btn btn-sm btn-secondary" (click)="openEdit(s)">Editar</button>
+          <button class="btn btn-sm btn-danger"    (click)="delete(s)">Eliminar</button>
+        </td>
+      </tr>
+      <tr *ngIf="filtered.length === 0">
+        <td colspan="6" class="empty">No se encontraron estudiantes.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+ 
+<div class="modal-overlay" *ngIf="showForm" (click)="onCancel()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <app-student-form [student]="selected"
+      (saved)="onSaved()" (cancelled)="onCancel()">
+    </app-student-form>
+  </div>
+</div>

@@ -1,0 +1,31 @@
+<div class="page">
+  <div class="page-header">
+    <h1 *ngIf="data">Cursos de {{ data.studentName }}</h1>
+    <button class="btn btn-secondary" (click)="goBack()">&#8592; Volver</button>
+  </div>
+ 
+  <div *ngIf="loading" class="state-msg">Cargando cursos...</div>
+  <div *ngIf="error"   class="error-msg">{{ error }}</div>
+ 
+  <div *ngIf="data && !loading">
+    <p class="subtitle">Email: {{ data.email }}</p>
+    <div *ngIf="data.courses.length === 0" class="empty-state">
+      Este estudiante no tiene cursos inscritos actualmente.
+    </div>
+    <div class="courses-grid" *ngIf="data.courses.length > 0">
+      <div class="course-card" *ngFor="let c of data.courses">
+        <div class="course-code">{{ c.courseCode }}</div>
+        <div class="course-name">{{ c.courseName }}</div>
+        <div class="course-meta">
+          <span>{{ c.credits }} credito(s)</span>
+          <span [class]="'badge-' + c.enrollmentStatus.toLowerCase()">
+            {{ c.enrollmentStatus }}
+          </span>
+        </div>
+        <div class="course-grade" *ngIf="c.grade !== null && c.grade !== undefined">
+          Nota: <strong>{{ c.grade }}</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
